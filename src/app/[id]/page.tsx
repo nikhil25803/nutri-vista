@@ -1,8 +1,8 @@
 import Image from "next/image";
 import ProfileStatCard from "../_components/Profile/StatsCard";
+import EntryField from "../_components/Profile/EntryField";
 
 export default function ProfilePage({ params }: { params: { id: string } }) {
-  //
   return (
     <section className="bg-backgroundLight w-full">
       <div className="max-w-[1280px] mx-auto py-5 px-2 text-white h-screen">
@@ -28,7 +28,7 @@ export default function ProfilePage({ params }: { params: { id: string } }) {
                 </h1>
                 <div className="grid grid-cols-3 gap-x-10 gap-y-10 text-white">
                   <ProfileStatCard value={150.5} category={"Calories"} />
-                  <ProfileStatCard value={10} category={"Fat"} />
+                  <ProfileStatCard value={100} category={"Fat"} />
                   <ProfileStatCard value={17.94} category={"Carbs"} />
                   <ProfileStatCard value={233.92} category={"Sodium"} />
                   <ProfileStatCard value={1.59} category={"Sugars"} />
@@ -38,6 +38,9 @@ export default function ProfilePage({ params }: { params: { id: string } }) {
             </div>
           </div>
         </div>
+
+        {/* Entry Field  */}
+        <EntryField />
       </div>
     </section>
   );
