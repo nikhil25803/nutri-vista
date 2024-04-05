@@ -1,8 +1,8 @@
 export default function EntryField() {
   return (
-    <section className="bg-backgroundDark mt-10 px-2 py-10 rounded-xl">
+    <section className="bg-backgroundDark mt-10 my-auto px-2 py-10 rounded-xl">
       <div className="flex flex-col items-center gap-y-5">
-        <div className="text-3xl">How was your day?</div>
+        <div className="text-2xl md:text-3xl">How was your day?</div>
 
         <textarea
           placeholder="Your words ..."

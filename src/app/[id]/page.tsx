@@ -5,7 +5,7 @@ import EntryField from "../_components/Profile/EntryField";
 export default function ProfilePage({ params }: { params: { id: string } }) {
   return (
     <section className="bg-backgroundLight w-full">
-      <div className="max-w-[1280px] mx-auto py-5 px-2 text-white h-screen">
+      <div className="max-w-[1280px] mx-auto py-5 px-2 text-white h-fit">
         <div className="bg-backgroundDark px-5 py-10 rounded-2xl">
           <div className="grid grid-cols-1 md:grid-cols-4">
             <div className="flex flex-row items-center justify-center gap-x-5 md:flex-col gap-y-5 md:col-span-2">
@@ -26,7 +26,7 @@ export default function ProfilePage({ params }: { params: { id: string } }) {
                 <h1 className="text-2xl border-b-2 border-textGrey ">
                   Last 30 days stats
                 </h1>
-                <div className="grid grid-cols-3 gap-x-10 gap-y-10 text-white">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-x-10 gap-y-10 text-white">
                   <ProfileStatCard value={150.5} category={"Calories"} />
                   <ProfileStatCard value={100} category={"Fat"} />
                   <ProfileStatCard value={17.94} category={"Carbs"} />
