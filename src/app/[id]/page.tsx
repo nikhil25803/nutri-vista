@@ -1,6 +1,7 @@
 import Image from "next/image";
 import ProfileStatCard from "../_components/Profile/StatsCard";
 import EntryField from "../_components/Profile/EntryField";
+import StatChart from "../_components/Profile/Last30DaysGraphs";
 
 export default function ProfilePage({ params }: { params: { id: string } }) {
   return (
@@ -24,7 +25,7 @@ export default function ProfilePage({ params }: { params: { id: string } }) {
             <div className="md:col-span-2">
               <div className="space-y-5 text-center mt-5">
                 <h1 className="text-2xl border-b-2 border-textGrey ">
-                  Last 30 days stats
+                  Last 30 days total.
                 </h1>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-x-10 gap-y-10 text-white">
                   <ProfileStatCard value={150.5} category={"Calories"} />
@@ -41,6 +42,7 @@ export default function ProfilePage({ params }: { params: { id: string } }) {
 
         {/* Entry Field  */}
         <EntryField />
+        <StatChart />
       </div>
     </section>
   );
