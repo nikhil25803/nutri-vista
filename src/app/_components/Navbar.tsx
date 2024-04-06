@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useState } from "react";
 import { TbUserSquareRounded } from "react-icons/tb";
 
@@ -9,7 +10,9 @@ export default function Navbar() {
     <nav className="bg-backgroundDark text-textWhite w-full">
       <div className="max-w-[1280px] mx-auto py-5 px-2 flex justify-between items-center">
         <div className="text-3xl">
-          Nutri<span className="text-textDark ml-1">Vista</span>
+          <Link href="/">
+            Nutri<span className="text-textDark ml-1">Vista</span>
+          </Link>
         </div>
         <div>
           {loggedIn ? (
