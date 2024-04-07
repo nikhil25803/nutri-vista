@@ -13,6 +13,9 @@
 /.next/
 /out/
 
+# Project Files
+logs.md
+
 # production
 /build
 

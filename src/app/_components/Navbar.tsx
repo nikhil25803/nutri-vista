@@ -1,10 +1,11 @@
 "use client";
+
 import Link from "next/link";
-import { useState } from "react";
 import { TbUserSquareRounded } from "react-icons/tb";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 export default function Navbar() {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const { data: session } = useSession();
 
   return (
     <nav className="bg-backgroundDark text-textWhite w-full">
@@ -15,10 +16,16 @@ export default function Navbar() {
           </Link>
         </div>
         <div>
-          {loggedIn ? (
-            <TbUserSquareRounded className="text-4xl text-white hover:text-textDark transition duration-500" />
-          ) : (
-            <button className="bg-textDark px-4 py-2 rounded-lg hover:bg-backgroundDark transition duration-300">
+          {session && (
+            <button className="px-4 py-2 " onClick={() => signOut()}>
+              <TbUserSquareRounded className="text-4xl text-white hover:text-textDark transition duration-500" />
+            </button>
+          )}
+          {!session && (
+            <button
+              className="bg-textDark px-4 py-2 rounded-lg hover:bg-backgroundDark transition duration-300"
+              onClick={() => signIn()}
+            >
               Login
             </button>
           )}
