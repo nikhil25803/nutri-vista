@@ -5,7 +5,7 @@ import { TbUserSquareRounded } from "react-icons/tb";
 import { useSession, signIn, signOut } from "next-auth/react";
 
 export default function Navbar() {
-  const { data: session } = useSession();
+  const session = useSession();
 
   return (
     <nav className="bg-backgroundDark text-textWhite w-full">
