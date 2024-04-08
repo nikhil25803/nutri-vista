@@ -1,4 +1,4 @@
-import axios from "axios";
+import { OnboardUserToDB } from "@/app/helpers/userToDB";
 import nextAuth, { NextAuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
@@ -19,14 +19,19 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
     async signIn({ profile }) {
-      const response = await axios.post(
-        `${process.env.BASE_URL!}/api/onboard`,
-        JSON.stringify(profile)
-      );
-      if (response.status == 200) {
-        return true;
+      try {
+        // Onboard user to DB
+        const onboardUser = await OnboardUserToDB(profile);
+
+        // If user has been added to DB successfully or not.
+        if (onboardUser) {
+          return true;
+        }
+        return false;
+      } catch (error) {
+        console.log("Error: ", error);
+        return false;
       }
-      return false;
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
