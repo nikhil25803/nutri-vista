@@ -5,7 +5,6 @@ import { TbUserSquareRounded } from "react-icons/tb";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { getDatFromToken } from "../helpers/decodeToke";
 
 export default function Navbar() {
   const { data: session } = useSession();
@@ -18,10 +17,7 @@ export default function Navbar() {
 
     // If there, is it valid
     if (localStorageToken) {
-      const decodedToken = getDatFromToken(localStorageToken);
-      if (decodedToken.tokenValid) {
-        setTokenCreated(true);
-      }
+      setTokenCreated(true);
     }
 
     // If not, fetch new token and add
