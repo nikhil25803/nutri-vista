@@ -3,9 +3,49 @@
 import Link from "next/link";
 import { TbUserSquareRounded } from "react-icons/tb";
 import { useSession, signIn, signOut } from "next-auth/react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { getDatFromToken } from "../helpers/decodeToke";
 
 export default function Navbar() {
   const { data: session } = useSession();
+
+  const [tokenCreated, setTokenCreated] = useState(false);
+
+  useEffect(() => {
+    // Check if JWT token already there
+    const localStorageToken = localStorage.getItem("token");
+
+    // If there, is it valid
+    if (localStorageToken) {
+      const decodedToken = getDatFromToken(localStorageToken);
+      if (decodedToken.tokenValid) {
+        setTokenCreated(true);
+      }
+    }
+
+    // If not, fetch new token and add
+    const fetchToken = async () => {
+      if (session && session.user && !tokenCreated) {
+        try {
+          const response = await axios.post("/api/gettoken", {
+            email: session.user.email,
+          });
+          if (response.data.tokenCreated) {
+            setTokenCreated(true);
+            const jwtToken = response.data.token;
+
+            // Save to local-storage
+            localStorage.setItem("token", jwtToken);
+          }
+        } catch (error) {
+          console.log("Error callign the /api/gettoken endpoint: ", error);
+        }
+      }
+    };
+
+    fetchToken();
+  }, [session, tokenCreated]);
 
   return (
     <nav className="bg-backgroundDark text-textWhite w-full">
