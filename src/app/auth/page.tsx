@@ -8,7 +8,6 @@ export default function Authentication() {
   const session = useSession();
 
   if (session?.data) {
-    console.log(session);
     redirect("/");
   }
 
