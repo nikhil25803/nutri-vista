@@ -20,30 +20,20 @@ export async function POST(request: NextRequest) {
   const userEmail = requestBody.email;
 
   // Check if user already exist or not
-  const userData = await UserModel.findOne({ userEmail }).select(
-    "-nutrientsData"
-  );
-  // If existing user
-  console.log("User Data: ", userData);
-  if (userData) {
-    // Create token and store
-    const tokenData = {
-      username: userData.username,
-      email: userData.email,
-      name: userData.name,
-      avatar: userData.avatarUrl,
-    };
+  const userData = await UserModel.findOne({ userEmail });
 
+  console.log("User Data: ", userData);
+  // If existing user
+  if (userData) {
+    console.log("User already exists");
     // Create a response
-    const response = NextResponse.json(
+    return NextResponse.json(
       {
         message: "LoggedIn Successfully",
         success: true,
       },
       { status: 200 }
     );
-
-    return response;
   } else {
     const onboardPayload: { [key: string]: string | Array<object> } = {};
 
@@ -71,23 +61,13 @@ export async function POST(request: NextRequest) {
     // Create new user
     const savedUser = await newUser.save();
 
-    // Create token and store
-    const tokenData = {
-      username: savedUser.username,
-      email: savedUser.email,
-      name: savedUser.name,
-      avatar: savedUser.avatarUrl,
-    };
-
     // Create a response
-    const response = NextResponse.json(
+    return NextResponse.json(
       {
         message: "New user has been created.",
         success: true,
       },
       { status: 200 }
     );
-
-    return response;
   }
 }
