@@ -1,9 +1,37 @@
+"use client"
+
 import Image from "next/image";
 import ProfileStatCard from "../_components/Profile/StatsCard";
 import EntryField from "../_components/Profile/EntryField";
 import StatChart from "../_components/Profile/Last30DaysGraphs";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import {useRouter} from "next/navigation"
 
 export default function ProfilePage({ params }: { params: { id: string } }) {
+  const router = useRouter()
+
+  const {data: session} = useSession()
+  // const [isValid, setIsValid] = useState(false)
+
+
+  // useEffect(() => {
+
+  //   // If no session available, send to auth page
+  //   if(session && session.user){
+  //     setIsValid(true)
+  //   }else{
+  //     router.push("/auth")
+  //   }
+
+  //   // Function to fetch user data
+
+  //   if(session && isValid){
+
+  //   }
+  // }, [isValid])
+
+
   return (
     <section className="bg-backgroundLight w-full">
       <div className="max-w-[1280px] mx-auto py-5 px-2 text-white h-fit">
