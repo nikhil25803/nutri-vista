@@ -117,7 +117,7 @@ export async function GET(request: NextRequest) {
     const dayOfMonth = data.day;
     const catValue = parseInt(data[category.toLocaleLowerCase()]);
 
-    catDataArray[dayOfMonth-1] = catValue;
+    catDataArray[dayOfMonth - 1] = catValue;
   }
 
   return NextResponse.json(
