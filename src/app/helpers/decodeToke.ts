@@ -1,18 +1,21 @@
-// import { NextRequest } from "next/server";
 // import jwt from "jsonwebtoken";
 
-// export const getDatFromToken = (request: NextRequest) => {
-//   console.log("here");
+// export const getDatFromToken = (token: string) => {
 //   try {
-//     const token = localStorage.getItem("token")!;
-//     console.log("Token: ", token);
-
-//     // Get the decoded token
-//     const decodedToken: any = jwt.verify(token, process.env.TOKEN_SECRET!);
-
-//     // Serve user id as response
-//     return decodedToken;
+//     const TOKEN_SECRET = process.env.TOKEN_SECRET!;
+//     console.log(TOKEN_SECRET);
+//     const decodedToken: any = jwt.verify(token, TOKEN_SECRET);
+//     console.log("Decoded token function: ", decodedToken);
+//     const response = {
+//       tokenValid: true,
+//       decodedData: decodedToken,
+//     };
+//     return response;
 //   } catch (error: any) {
-//     throw new Error(error.message);
+//     const response = {
+//       tokenValid: false,
+//     };
+//     console.log("Error decoding JWT: ", error);
+//     return response;
 //   }
 // };
