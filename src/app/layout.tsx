@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "./_components/Navbar";
 import Footer from "./_components/Footer";
 import AuthProvider from "./_components/SessionProvider";
+import { Toaster } from "react-hot-toast";
 
 const font = Sora({ subsets: ["latin"] });
 
@@ -22,6 +23,7 @@ export default function RootLayout({
       <body className={font.className}>
         <AuthProvider>
           <Navbar />
+          <Toaster position="top-right" />
           {children}
           <Footer />
         </AuthProvider>

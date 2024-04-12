@@ -5,20 +5,59 @@ import { TbUserSquareRounded } from "react-icons/tb";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
+  const router = useRouter();
   const { data: session } = useSession();
 
   const [tokenCreated, setTokenCreated] = useState(false);
+  const [loggedIn, setIsLoggedIn] = useState(false);
+
+  // Function to logout user
+  const logOutUser = async () => {
+    const data = await signOut({ redirect: false, callbackUrl: "/auth" });
+    localStorage.removeItem("token");
+    setIsLoggedIn(false)
+    router.push(data.url);
+  };
 
   useEffect(() => {
     // Check if JWT token already there
     const localStorageToken = localStorage.getItem("token");
 
+    // Function to validate user token
+    const validateToken = async (localStorageToken: string) => {
+      try {
+        const validationResponse = await axios.get("/api/validateUser", {
+          headers: {
+            usertoken: localStorageToken,
+          },
+        });
+
+        if (validationResponse.status == 200) {
+          return true;
+        } else {
+          return false;
+        }
+      } catch (error) {
+        return false;
+      }
+    };
+
     // If there, is it valid
-    if (localStorageToken) {
-      setTokenCreated(true);
-    }
+    const checkTokenValidity = async () => {
+      if (localStorageToken) {
+        const check = await validateToken(localStorageToken);
+        if (check) {
+          setIsLoggedIn(true);
+          setTokenCreated(true);
+        } else {
+          setIsLoggedIn(false)
+          logOutUser();
+        }
+      }
+    };
 
     // If not, fetch new token and add
     const fetchToken = async () => {
@@ -34,13 +73,16 @@ export default function Navbar() {
             // Save to local-storage
             localStorage.setItem("token", jwtToken);
           }
-        } catch (error) {
-          console.log("Error callign the /api/gettoken endpoint: ", error);
-        }
+        } catch (error) {}
       }
     };
 
-    fetchToken();
+    const fetchData = async () => {
+      await checkTokenValidity();
+      await fetchToken();
+    };
+
+    fetchData();
   }, [session, tokenCreated]);
 
   return (
@@ -52,12 +94,15 @@ export default function Navbar() {
           </Link>
         </div>
         <div>
-          {session && (
-            <button className="px-4 py-2 " onClick={() => signOut()}>
+          {loggedIn && (
+            <button
+              className="px-4 py-2 "
+              onClick={logOutUser}
+            >
               <TbUserSquareRounded className="text-4xl text-white hover:text-textDark transition duration-500" />
             </button>
           )}
-          {!session && (
+          {!loggedIn && (
             <button
               className="bg-textDark px-4 py-2 rounded-lg hover:bg-backgroundDark transition duration-300"
               onClick={() => signIn()}
