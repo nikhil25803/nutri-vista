@@ -1,77 +1,161 @@
-"use client"
+"use client";
 
 import Image from "next/image";
 import ProfileStatCard from "../_components/Profile/StatsCard";
 import EntryField from "../_components/Profile/EntryField";
 import StatChart from "../_components/Profile/Last30DaysGraphs";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import {useRouter} from "next/navigation"
+import { useRouter } from "next/navigation";
+import { ReactTyped } from "react-typed";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 export default function ProfilePage({ params }: { params: { id: string } }) {
-  const router = useRouter()
+  const [isValid, setIsValid] = useState(false);
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
 
-  const {data: session} = useSession()
-  // const [isValid, setIsValid] = useState(false)
+  // Initialize router
+  const router = useRouter();
 
+  // Fetch session data
+  const session = useSession();
 
-  // useEffect(() => {
+  // Function to logout user
+  const logOutUser = async () => {
+    const data = await signOut({ redirect: false, callbackUrl: "/auth" });
+    localStorage.removeItem("token");
+    router.push(data.url);
+  };
 
-  //   // If no session available, send to auth page
-  //   if(session && session.user){
-  //     setIsValid(true)
-  //   }else{
-  //     router.push("/auth")
-  //   }
+  // Function to validate token
+  const tokenValidity = async (tokenData: string) => {
+    try {
+      // Validate JWT Token
+      const validationResponse = await axios.get("/api/validateUser", {
+        headers: {
+          usertoken: tokenData,
+        },
+      });
 
-  //   // Function to fetch user data
+      // If toke is validated
+      if (validationResponse.status == 200) {
+        const response = {
+          data: validationResponse.data,
+          isValid: true,
+        };
 
-  //   if(session && isValid){
+        return response;
+      } else {
+        const response = {
+          data: null,
+          isValid: false,
+        };
 
-  //   }
-  // }, [isValid])
+        return response;
+      }
+    } catch (error) {
+      const response = {
+        data: null,
+        isValid: false,
+      };
 
+      return response;
+    }
+  };
+
+  useEffect(() => {
+    const localStorageToken = localStorage.getItem("token");
+
+    if (!localStorageToken) {
+      router.push("/auth");
+    } else {
+      // If token is available
+      const checkTokenValidity = async () => {
+        const check = await tokenValidity(localStorageToken);
+
+        if (check.isValid) {
+          const userData = check.data.data;
+          if (params.id === userData.username) {
+            setIsValid(true);
+            setName(userData.username);
+            setUsername(userData.email);
+          } else {
+            toast.success("You can only visit your profile.", {
+              id: userData.id,
+            });
+            setIsValid(false);
+            router.push("/");
+          }
+        } else {
+          toast.error("Session Expired. Login Again", { id: params.id });
+          logOutUser();
+          setIsValid(false);
+        }
+      };
+
+      checkTokenValidity();
+    }
+  }, []);
 
   return (
     <section className="bg-backgroundLight w-full">
-      <div className="max-w-[1280px] mx-auto py-5 px-2 text-white h-fit">
-        <div className="bg-backgroundDark px-5 py-10 rounded-2xl">
-          <div className="grid grid-cols-1 md:grid-cols-4">
-            <div className="flex flex-row items-center justify-center gap-x-5 md:flex-col gap-y-5 md:col-span-2">
-              <Image
-                src="https://avatars.githubusercontent.com/u/93156825?v=4"
-                alt="Hello World"
-                width={200}
-                height={200}
-                className="rounded-full"
-              />
-              <div>
-                <h1 className="text-textDark text-3xl">Name</h1>
-                <p className="text-textGrey">Username</p>
+      {isValid ? (
+        <div className="max-w-[1280px] mx-auto py-5 px-2 text-white h-fit">
+          <div className="bg-backgroundDark px-5 py-10 rounded-2xl">
+            <div className="grid grid-cols-1 md:grid-cols-4">
+              <div className="flex flex-row items-center justify-center gap-x-5 md:flex-col gap-y-5 md:col-span-2">
+                <Image
+                  src="https://avatars.githubusercontent.com/u/93156825?v=4"
+                  alt="Hello World"
+                  width={200}
+                  height={200}
+                  className="rounded-full"
+                />
+                <div>
+                  <h1 className="text-textDark text-3xl">{name}</h1>
+                  <p className="text-textGrey">{username}</p>
+                </div>
               </div>
-            </div>
-            <div className="md:col-span-2">
-              <div className="space-y-5 text-center mt-5">
-                <h1 className="text-2xl border-b-2 border-textGrey ">
-                  Last 30 days total.
-                </h1>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-x-10 gap-y-10 text-white">
-                  <ProfileStatCard value={150.5} category={"Calories"} />
-                  <ProfileStatCard value={100} category={"Fat"} />
-                  <ProfileStatCard value={17.94} category={"Carbs"} />
-                  <ProfileStatCard value={233.92} category={"Sodium"} />
-                  <ProfileStatCard value={1.59} category={"Sugars"} />
-                  <ProfileStatCard value={3.59} category={"Protein"} />
+              <div className="md:col-span-2">
+                <div className="space-y-5 text-center mt-5">
+                  <h1 className="text-2xl border-b-2 border-textGrey ">
+                    Last 30 days total.
+                  </h1>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-x-10 gap-y-10 text-white">
+                    <ProfileStatCard value={150.5} category={"Calories"} />
+                    <ProfileStatCard value={100} category={"Fat"} />
+                    <ProfileStatCard value={17.94} category={"Carbs"} />
+                    <ProfileStatCard value={233.92} category={"Sodium"} />
+                    <ProfileStatCard value={1.59} category={"Sugars"} />
+                    <ProfileStatCard value={3.59} category={"Protein"} />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Entry Field  */}
-        <EntryField />
-        <StatChart />
-      </div>
+          {/* Entry Field  */}
+          <EntryField />
+          <StatChart />
+        </div>
+      ) : (
+        <div className="flex flex-row items-center justify-center h-screen">
+          <h1 className="text-6xl text-white">
+            Loading{" "}
+            <span>
+              <ReactTyped
+                className="text-textDark"
+                strings={["..."]}
+                typeSpeed={75}
+                loop={false}
+                cursorChar="."
+              />
+            </span>
+          </h1>
+        </div>
+      )}
     </section>
   );
 }
