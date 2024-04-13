@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { ReactTyped } from "react-typed";
 import axios from "axios";
 import toast from "react-hot-toast";
+import LastEntry from "../_components/Profile/LastEntry";
 
 export default function ProfilePage({ params }: { params: { id: string } }) {
   // Initialize router
@@ -81,7 +82,6 @@ export default function ProfilePage({ params }: { params: { id: string } }) {
     sessionToken: string
   ) => {
     try {
-
       // Make an API call to fetch data
       const userData = await axios.get("/api/getDashboardStat", {
         params: {
@@ -222,7 +222,8 @@ export default function ProfilePage({ params }: { params: { id: string } }) {
 
           {/* Entry Field  */}
           <EntryField email={email} jwtToken={jwtToken} />
-          <StatChart email={email} jwtToken={jwtToken}/>
+          <LastEntry email={email} jwtToken={jwtToken} />
+          <StatChart email={email} jwtToken={jwtToken} />
         </div>
       ) : (
         <div className="flex flex-row items-center justify-center h-screen">

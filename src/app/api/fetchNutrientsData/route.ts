@@ -62,6 +62,23 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  // Add the data to the database if entry for the day doesn't exist
+  const currentDate = new Date();
+  const existingEntry = userObject.nutrientsData.find(
+    (entry: any) =>
+      entry.day === currentDate.getDate() &&
+      entry.month === currentDate.getMonth() + 1 &&
+      entry.year === currentDate.getFullYear()
+  );
+
+  if (existingEntry) {
+    // If entry for the day already exists, return a response indicating so
+    return NextResponse.json(
+      { message: "An entry for today already exists", data: null },
+      { status: 200 }
+    );
+  }
+
   // Clean the user entered text
   const cleaned_text = text.replace(/[^a-zA-Z0-9 ]/g, "");
 

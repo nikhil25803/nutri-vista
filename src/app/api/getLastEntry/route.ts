@@ -1,3 +1,4 @@
+import { decodeToken } from "@/app/helpers/decodeToke";
 import { connectDB } from "@/db/dbConfig";
 import UserModel from "@/models/userModel";
 import { NextRequest, NextResponse } from "next/server";
@@ -13,6 +14,25 @@ export async function GET(request: NextRequest) {
       {
         message: "No user email found in query parameter.",
       },
+      { status: 400 }
+    );
+  }
+
+  const userToken = request.headers.get("usertoken");
+  if (!userToken) {
+    return NextResponse.json(
+      {
+        message: "User token is not provided.",
+      },
+      { status: 400 }
+    );
+  }
+
+  // Check if token is valid or not
+  const tokenValidation = decodeToken(userToken);
+  if (!tokenValidation.isvalid) {
+    return NextResponse.json(
+      { message: "Token is expired or invalid", data: null },
       { status: 400 }
     );
   }
@@ -53,6 +73,16 @@ export async function GET(request: NextRequest) {
     },
   ]);
 
+  if (categoryData.length <= 0) {
+    return NextResponse.json(
+      { message: "No record available", data: null },
+      { status: 400 }
+    );
+  }
+
   // Return the category data
-  return NextResponse.json({ message: categoryData }, { status: 200 });
+  return NextResponse.json(
+    { message: "Last Entry has been fetched!", data: categoryData[0] },
+    { status: 200 }
+  );
 }

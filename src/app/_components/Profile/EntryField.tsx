@@ -38,8 +38,12 @@ export default function EntryField(props: EntryPropsInterface) {
     );
 
     if (entryResponse.status === 200) {
-      toast.success("Entry has been recorded successfully!");
-      window.location.reload();
+      if (entryResponse.data.data) {
+        toast.success("Entry has been recorded successfully!");
+        window.location.reload();
+      } else {
+        toast.success("An entry for today already exists!");
+      }
     } else {
       toast.error("Unexpected error!");
     }
