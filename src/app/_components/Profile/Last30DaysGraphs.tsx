@@ -22,7 +22,7 @@ export default function StatChart() {
         "D",
         "E",
         "F",
-        "G",
+        "Z",
       ],
       datasets: [
         {

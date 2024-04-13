@@ -30,6 +30,7 @@ export async function POST(request: NextRequest) {
   // If user exists, create JWT token with user data payload and return token
   const tokenData = {
     id: userData._id,
+    name: userData.name,
     username: userData.username,
     email: userData.email,
   };

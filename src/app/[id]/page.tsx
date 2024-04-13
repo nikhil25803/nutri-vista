@@ -12,15 +12,25 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 export default function ProfilePage({ params }: { params: { id: string } }) {
-  const [isValid, setIsValid] = useState(false);
-  const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
-
   // Initialize router
   const router = useRouter();
 
   // Fetch session data
   const session = useSession();
+
+  const [isValid, setIsValid] = useState(false);
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [jwtToken, setJwtToken] = useState("");
+  const [dashboardData, setDashboardData] = useState({
+    totalCalories: 0,
+    totalFat: 0,
+    totalCarbs: 0,
+    totalSodium: 0,
+    totalSugars: 0,
+    totalProtein: 0,
+  });
 
   // Function to logout user
   const logOutUser = async () => {
@@ -65,6 +75,48 @@ export default function ProfilePage({ params }: { params: { id: string } }) {
     }
   };
 
+  // Function to fetch last 30 days data
+  const fetchLast30DaysDaya = async (
+    userEmail: string,
+    sessionToken: string
+  ) => {
+    try {
+      console.log(userEmail, sessionToken);
+      // Make an API call to fetch data
+      const userData = await axios.get("/api/getDashboardStat", {
+        params: {
+          useremail: userEmail,
+        },
+        headers: {
+          usertoken: sessionToken,
+        },
+      });
+
+      if (userData.status === 200) {
+        const res = {
+          success: true,
+          data: userData.data,
+        };
+
+        return res;
+      } else {
+        const res = {
+          data: null,
+          success: false,
+        };
+
+        return res;
+      }
+    } catch (error) {
+      const res = {
+        data: null,
+        success: false,
+      };
+
+      return res;
+    }
+  };
+
   useEffect(() => {
     const localStorageToken = localStorage.getItem("token");
 
@@ -76,11 +128,23 @@ export default function ProfilePage({ params }: { params: { id: string } }) {
         const check = await tokenValidity(localStorageToken);
 
         if (check.isValid) {
+          setJwtToken(localStorageToken);
           const userData = check.data.data;
           if (params.id === userData.username) {
+            // The user is authenticated as well as valid, then set the parameters
             setIsValid(true);
-            setName(userData.username);
-            setUsername(userData.email);
+            setName(userData.name);
+            setUsername(userData.username);
+            setEmail(userData.email);
+
+            // Now fetch the last 30 days data
+            const dashboardStat = await fetchLast30DaysDaya(
+              userData.email,
+              localStorageToken
+            );
+            if (dashboardStat.success) {
+              setDashboardData(dashboardStat.data.data);
+            }
           } else {
             toast.success("You can only visit your profile.", {
               id: userData.id,
@@ -124,12 +188,30 @@ export default function ProfilePage({ params }: { params: { id: string } }) {
                     Last 30 days total.
                   </h1>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-x-10 gap-y-10 text-white">
-                    <ProfileStatCard value={150.5} category={"Calories"} />
-                    <ProfileStatCard value={100} category={"Fat"} />
-                    <ProfileStatCard value={17.94} category={"Carbs"} />
-                    <ProfileStatCard value={233.92} category={"Sodium"} />
-                    <ProfileStatCard value={1.59} category={"Sugars"} />
-                    <ProfileStatCard value={3.59} category={"Protein"} />
+                    <ProfileStatCard
+                      value={dashboardData.totalCalories}
+                      category={"Calories"}
+                    />
+                    <ProfileStatCard
+                      value={dashboardData.totalFat}
+                      category={"Fat"}
+                    />
+                    <ProfileStatCard
+                      value={dashboardData.totalCarbs}
+                      category={"Carbs"}
+                    />
+                    <ProfileStatCard
+                      value={dashboardData.totalSodium}
+                      category={"Sodium"}
+                    />
+                    <ProfileStatCard
+                      value={dashboardData.totalSugars}
+                      category={"Sugars"}
+                    />
+                    <ProfileStatCard
+                      value={dashboardData.totalProtein}
+                      category={"Protein"}
+                    />
                   </div>
                 </div>
               </div>
