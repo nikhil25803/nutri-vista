@@ -81,7 +81,7 @@ export default function ProfilePage({ params }: { params: { id: string } }) {
     sessionToken: string
   ) => {
     try {
-      console.log(userEmail, sessionToken);
+
       // Make an API call to fetch data
       const userData = await axios.get("/api/getDashboardStat", {
         params: {
@@ -142,6 +142,8 @@ export default function ProfilePage({ params }: { params: { id: string } }) {
               userData.email,
               localStorageToken
             );
+
+            // If data has been fetched successfully
             if (dashboardStat.success) {
               setDashboardData(dashboardStat.data.data);
             }
@@ -219,7 +221,7 @@ export default function ProfilePage({ params }: { params: { id: string } }) {
           </div>
 
           {/* Entry Field  */}
-          <EntryField />
+          <EntryField email={email} jwtToken={jwtToken} />
           <StatChart />
         </div>
       ) : (
