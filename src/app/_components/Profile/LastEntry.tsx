@@ -1,6 +1,7 @@
 import axios from "axios";
 import ProfileStatCard from "./StatsCard";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 interface LastEntryProps {
   email: string;
@@ -36,7 +37,7 @@ export default function LastEntry(props: LastEntryProps) {
     if (entryResponse.status === 200) {
       const res = {
         fetched: true,
-        data: entryResponse.data.data,
+        data: entryResponse.data,
       };
 
       return res;
@@ -51,15 +52,29 @@ export default function LastEntry(props: LastEntryProps) {
   };
 
   useEffect(() => {
+    // Getting time-stamp
+    const fetchedDate = new Date().toLocaleDateString();
+
     // Call the function
     const callFetchLastEntryData = async () => {
       const res = await fetchLastEntryData(props.email, props.jwtToken);
       if (res.fetched) {
-        setNutrientsData(res.data);
+        setNutrientsData(res.data.data);
+
+        // Cache the result
+        localStorage.setItem(`${fetchedDate}`, JSON.stringify(res.data));
+      } else {
+        toast.error("Error while fetching data. Sorry :(");
       }
     };
 
-    callFetchLastEntryData();
+    const cachedData = localStorage.getItem(`${fetchedDate}`);
+    if (!cachedData) {
+      callFetchLastEntryData();
+    } else {
+      const cachedLastEntryData = JSON.parse(cachedData);
+      setNutrientsData(cachedLastEntryData.data);
+    }
   }, []);
 
   return (

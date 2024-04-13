@@ -16,7 +16,6 @@ export default function EntryField(props: EntryPropsInterface) {
   const router = useRouter();
 
   // Function to make an entry
-
   const submitEntry = async () => {
     if (!value.trim()) {
       toast.error("Please enter your thoughts before submitting!");
@@ -39,6 +38,9 @@ export default function EntryField(props: EntryPropsInterface) {
 
     if (entryResponse.status === 200) {
       if (entryResponse.data.data) {
+        // Getting time-stamp
+        const fetchedDate = new Date().toLocaleDateString();
+        localStorage.removeItem(`${fetchedDate}`);
         toast.success("Entry has been recorded successfully!");
         window.location.reload();
       } else {

@@ -91,7 +91,7 @@ export default function StatChart(props: ChartPoropsInterface) {
           setFetchedState("notfound");
         }
       } catch (error) {
-        toast.error("Error fetching graph data:", {
+        toast.error("Error fetching graph data.", {
           id: "error-while-fetching-data",
         });
         setFetchedState("notfound");
