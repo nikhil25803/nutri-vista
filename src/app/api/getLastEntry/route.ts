@@ -73,16 +73,23 @@ export async function GET(request: NextRequest) {
     },
   ]);
 
+  // Sending timestamp
+  const fetchedDate = new Date();
+
   if (categoryData.length <= 0) {
     return NextResponse.json(
-      { message: "No record available", data: null },
+      { message: "No record available", data: null, fetchedDate },
       { status: 400 }
     );
   }
 
   // Return the category data
   return NextResponse.json(
-    { message: "Last Entry has been fetched!", data: categoryData[0] },
+    {
+      message: "Last Entry has been fetched!",
+      data: categoryData[0],
+      fetchedDate,
+    },
     { status: 200 }
   );
 }

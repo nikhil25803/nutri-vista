@@ -16,7 +16,6 @@ export default function EntryField(props: EntryPropsInterface) {
   const router = useRouter();
 
   // Function to make an entry
-
   const submitEntry = async () => {
     if (!value.trim()) {
       toast.error("Please enter your thoughts before submitting!");
@@ -39,6 +38,20 @@ export default function EntryField(props: EntryPropsInterface) {
 
     if (entryResponse.status === 200) {
       if (entryResponse.data.data) {
+        // Getting time-stamp
+        const fetchedDate = new Date().toLocaleDateString();
+
+        // Clear cached data
+        localStorage.removeItem(`${fetchedDate}-lastEntryData`);
+        localStorage.removeItem(`${fetchedDate}-dashboardStat`);
+        localStorage.removeItem(`${fetchedDate}-calories-graphData`)
+        localStorage.removeItem(`${fetchedDate}-fats-graphData`)
+        localStorage.removeItem(`${fetchedDate}-carbs-graphData`)
+        localStorage.removeItem(`${fetchedDate}-sodium-graphData`)
+        localStorage.removeItem(`${fetchedDate}-sugars-graphData`)
+        localStorage.removeItem(`${fetchedDate}-protein-graphData`)
+
+
         toast.success("Entry has been recorded successfully!");
         window.location.reload();
       } else {

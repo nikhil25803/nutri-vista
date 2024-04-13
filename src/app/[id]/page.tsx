@@ -137,15 +137,29 @@ export default function ProfilePage({ params }: { params: { id: string } }) {
             setUsername(userData.username);
             setEmail(userData.email);
 
-            // Now fetch the last 30 days data
-            const dashboardStat = await fetchLast30DaysDaya(
-              userData.email,
-              localStorageToken
+            const fetchedDate = new Date().toLocaleDateString();
+            
+            // Check for cached result
+            const cachedDashboardData = localStorage.getItem(
+              `${fetchedDate}-dashboardStat`
             );
+            if (cachedDashboardData) {
+              setDashboardData(JSON.parse(cachedDashboardData));
+            } else {
+              // Now fetch the last 30 days data
+              const dashboardStat = await fetchLast30DaysDaya(
+                userData.email,
+                localStorageToken
+              );
 
-            // If data has been fetched successfully
-            if (dashboardStat.success) {
-              setDashboardData(dashboardStat.data.data);
+              // If data has been fetched successfully
+              if (dashboardStat.success) {
+                setDashboardData(dashboardStat.data.data);
+                localStorage.setItem(
+                  `${fetchedDate}-dashboardStat`,
+                  JSON.stringify(dashboardStat.data.data)
+                );
+              }
             }
           } else {
             toast.success("You can only visit your profile.", {
