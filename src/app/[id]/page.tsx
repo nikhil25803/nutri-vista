@@ -206,27 +206,27 @@ export default function ProfilePage({ params }: { params: { id: string } }) {
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-x-10 gap-y-10 text-white">
                     <ProfileStatCard
                       value={dashboardData.totalCalories}
-                      category={"Calories"}
+                      category={"Calories (kcal)"}
                     />
                     <ProfileStatCard
                       value={dashboardData.totalFat}
-                      category={"Fat"}
+                      category={"Fat (g)"}
                     />
                     <ProfileStatCard
                       value={dashboardData.totalCarbs}
-                      category={"Carbs"}
+                      category={"Carbs (g)"}
                     />
                     <ProfileStatCard
                       value={dashboardData.totalSodium}
-                      category={"Sodium"}
+                      category={"Sodium (mg)"}
                     />
                     <ProfileStatCard
                       value={dashboardData.totalSugars}
-                      category={"Sugars"}
+                      category={"Sugars (g)"}
                     />
                     <ProfileStatCard
                       value={dashboardData.totalProtein}
-                      category={"Protein"}
+                      category={"Protein (g)"}
                     />
                   </div>
                 </div>
