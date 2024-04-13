@@ -62,13 +62,13 @@ export default function LastEntry(props: LastEntryProps) {
         setNutrientsData(res.data.data);
 
         // Cache the result
-        localStorage.setItem(`${fetchedDate}`, JSON.stringify(res.data));
+        localStorage.setItem(`${fetchedDate}-lastEntryData`, JSON.stringify(res.data));
       } else {
         toast.error("Error while fetching data. Sorry :(");
       }
     };
 
-    const cachedData = localStorage.getItem(`${fetchedDate}`);
+    const cachedData = localStorage.getItem(`${fetchedDate}-lastEntryData`);
     if (!cachedData) {
       callFetchLastEntryData();
     } else {

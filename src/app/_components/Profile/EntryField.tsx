@@ -40,7 +40,9 @@ export default function EntryField(props: EntryPropsInterface) {
       if (entryResponse.data.data) {
         // Getting time-stamp
         const fetchedDate = new Date().toLocaleDateString();
-        localStorage.removeItem(`${fetchedDate}`);
+
+        localStorage.removeItem(`${fetchedDate}-lastEntryData`);
+        localStorage.removeItem(`${fetchedDate}-dashboardStat`);
         toast.success("Entry has been recorded successfully!");
         window.location.reload();
       } else {
