@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
   if (tokenValidation.isvalid) {
     return NextResponse.json(
       {
-        message: "Token Validation Point",
+        message: "Token Validated",
         data: tokenValidation.data,
       },
       { status: 200 }

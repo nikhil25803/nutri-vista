@@ -1,3 +1,4 @@
+import { decodeToken } from "@/app/helpers/decodeToke";
 import { connectDB } from "@/db/dbConfig";
 import UserModel from "@/models/userModel";
 import axios from "axios";
@@ -16,18 +17,44 @@ export async function POST(request: NextRequest) {
   }
 
   // Fetch required field from the request body
-  const { email, text } = reqBody;
-  if (!email || !text) {
+  const { text } = reqBody;
+  if (!text) {
     return NextResponse.json(
       {
-        message: "Email, text and date. All are required",
+        message: "No text is provided",
       },
       { status: 400 }
     );
   }
 
+  const url = new URL(request.url);
+
+  const userEmail = url.searchParams.get("useremail");
+  if (!userEmail) {
+    return NextResponse.json({ message: "No query provided" }, { status: 400 });
+  }
+
+  const userToken = request.headers.get("usertoken");
+  if (!userToken) {
+    return NextResponse.json(
+      {
+        message: "User token is not provided.",
+      },
+      { status: 400 }
+    );
+  }
+
+  // Check if token is valid or not
+  const tokenValidation = decodeToken(userToken);
+  if (!tokenValidation.isvalid) {
+    return NextResponse.json(
+      { message: "Token is expired or invalid", data: null },
+      { status: 400 }
+    );
+  }
+
   // Check if user is valid or not
-  const userObject = await UserModel.findOne({ email });
+  const userObject = await UserModel.findOne({ email: userEmail });
   if (!userObject) {
     return NextResponse.json(
       { message: "User does not exist" },
@@ -37,10 +64,6 @@ export async function POST(request: NextRequest) {
 
   // Clean the user entered text
   const cleaned_text = text.replace(/[^a-zA-Z0-9 ]/g, "");
-
-  /* 
-  https://trackapi.nutritionix.com/v2/natural/nutrients?x-app-id=6eb9a7e0&x-app-key=38e6189f31cef357f85011bec1dafbe6&x-remote-user-id=0
-*/
 
   // If user exists, fetch calories
   const BASE_URL = process.env.NUTRITIONIX_BASE_URL!;
