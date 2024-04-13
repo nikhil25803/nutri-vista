@@ -222,7 +222,7 @@ export default function ProfilePage({ params }: { params: { id: string } }) {
 
           {/* Entry Field  */}
           <EntryField email={email} jwtToken={jwtToken} />
-          <StatChart />
+          <StatChart email={email} jwtToken={jwtToken}/>
         </div>
       ) : (
         <div className="flex flex-row items-center justify-center h-screen">

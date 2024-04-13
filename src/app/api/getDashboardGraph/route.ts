@@ -1,9 +1,29 @@
+import { decodeToken } from "@/app/helpers/decodeToke";
 import { connectDB } from "@/db/dbConfig";
 import UserModel from "@/models/userModel";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   await connectDB();
+
+  const userToken = request.headers.get("usertoken");
+  if (!userToken) {
+    return NextResponse.json(
+      {
+        message: "User token is not provided.",
+      },
+      { status: 400 }
+    );
+  }
+
+  // Check if token is valid or not
+  const tokenValidation = decodeToken(userToken);
+  if (!tokenValidation.isvalid) {
+    return NextResponse.json(
+      { message: "Token is expired or invalid", data: null },
+      { status: 400 }
+    );
+  }
 
   const url = new URL(request.url);
 
@@ -28,14 +48,16 @@ export async function GET(request: NextRequest) {
   }
 
   if (
-    category! in ["calories", "fat", "carbs", "sodium", "sugars", "protein"]
+    !["calories", "fats", "carbs", "sodium", "sugars", "protein"].includes(
+      category
+    )
   ) {
     return NextResponse.json(
       {
         message: "Invalid category submitted.",
         categories_allowed: [
           "calories",
-          "fat",
+          "fats",
           "carbs",
           "sodium",
           "sugars",
@@ -96,6 +118,15 @@ export async function GET(request: NextRequest) {
 
   // Fetch the array of data
   const categoryArrayData = categoryData[0].nutrientsData;
+
+  if (categoryArrayData.lenght <= 0) {
+    return NextResponse.json(
+      {
+        message: "No data available",
+      },
+      { status: 400 }
+    );
+  }
 
   let daysArray: number[] = [];
   let catDataArray: number[] = [];
