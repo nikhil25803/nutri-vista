@@ -80,15 +80,31 @@ export default function StatChart(props: ChartPoropsInterface) {
       };
 
       try {
-        const graphData = await categoryGraphData(payload);
+        const fetchedDate = new Date().toLocaleDateString();
 
-        if (graphData.success) {
-          setXLabelData(graphData.labels);
-          setYLabelData(graphData.data);
-
+        // Check for cached data
+        const cachedData = localStorage.getItem(
+          `${fetchedDate}-${currentValue}-graphData`
+        );
+        if (cachedData) {
+          setXLabelData(JSON.parse(cachedData).labels);
+          setYLabelData(JSON.parse(cachedData).data);
           setFetchedState("found");
+
         } else {
-          setFetchedState("notfound");
+          const graphData = await categoryGraphData(payload);
+
+          if (graphData.success) {
+            setXLabelData(graphData.labels);
+            setYLabelData(graphData.data);
+            localStorage.setItem(
+              `${fetchedDate}-${currentValue}-graphData`,
+              JSON.stringify(graphData)
+            );
+            setFetchedState("found");
+          } else {
+            setFetchedState("notfound");
+          }
         }
       } catch (error) {
         toast.error("Error fetching graph data.", {

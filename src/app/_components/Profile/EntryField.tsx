@@ -41,8 +41,17 @@ export default function EntryField(props: EntryPropsInterface) {
         // Getting time-stamp
         const fetchedDate = new Date().toLocaleDateString();
 
+        // Clear cached data
         localStorage.removeItem(`${fetchedDate}-lastEntryData`);
         localStorage.removeItem(`${fetchedDate}-dashboardStat`);
+        localStorage.removeItem(`${fetchedDate}-calories-graphData`)
+        localStorage.removeItem(`${fetchedDate}-fats-graphData`)
+        localStorage.removeItem(`${fetchedDate}-carbs-graphData`)
+        localStorage.removeItem(`${fetchedDate}-sodium-graphData`)
+        localStorage.removeItem(`${fetchedDate}-sugars-graphData`)
+        localStorage.removeItem(`${fetchedDate}-protein-graphData`)
+
+
         toast.success("Entry has been recorded successfully!");
         window.location.reload();
       } else {
