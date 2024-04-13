@@ -44,7 +44,7 @@ export const OnboardUserToDB = async (authBody: any) => {
     // User exist
     return true;
   } catch (error) {
-    // console.log(error);
+
     return false;
   }
 };
