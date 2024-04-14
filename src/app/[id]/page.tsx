@@ -185,13 +185,13 @@ export default function ProfilePage({ params }: { params: { id: string } }) {
         <div className="max-w-[1280px] mx-auto py-5 px-2 text-white h-fit">
           <div className="bg-backgroundDark px-5 py-10 rounded-2xl">
             <div className="grid grid-cols-1 md:grid-cols-4">
-              <div className="flex flex-row items-center justify-center gap-x-5 md:flex-col gap-y-5 md:col-span-2">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-x-5 md:flex-col gap-y-5 md:col-span-2">
                 <Image
                   src="https://avatars.githubusercontent.com/u/93156825?v=4"
                   alt="Hello World"
                   width={200}
                   height={200}
-                  className="rounded-full"
+                  className="rounded-full w-[200px] h-[200px]"
                 />
                 <div>
                   <h1 className="text-textDark text-3xl">{name}</h1>
@@ -241,7 +241,7 @@ export default function ProfilePage({ params }: { params: { id: string } }) {
         </div>
       ) : (
         <div className="flex flex-row items-center justify-center h-screen">
-          <h1 className="text-6xl text-white">
+          <h1 className="text-2xl md:text-4xl lg:text-6xl text-white">
             Loading{" "}
             <span>
               <ReactTyped

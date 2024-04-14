@@ -76,10 +76,7 @@ export default function Navbar() {
           setIsLoggedIn(false);
           logOutUser();
         }
-      } else {
-        setIsLoggedIn(false);
-        logOutUser();
-      }
+      } 
     };
 
     // If not, fetch new token and add
@@ -125,10 +122,10 @@ export default function Navbar() {
                   router.push(`/${userName}`);
                 }}
               >
-                <TbUserSquareRounded className="text-4xl text-white hover:text-textDark transition duration-500" />
+                <TbUserSquareRounded className="text-3xl text-white hover:text-textDark transition duration-500" />
               </button>
               <button className="px-4 py-2 " onClick={logOutUser}>
-                <GrLogout className="text-4xl text-white hover:text-textDark transition duration-500" />
+                <GrLogout className="text-3xl text-white hover:text-textDark transition duration-500" />
               </button>
             </div>
           )}
