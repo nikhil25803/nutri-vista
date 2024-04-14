@@ -21,6 +21,7 @@ export default function EntryField(props: EntryPropsInterface) {
     setButtonState("not-active")
     if (!value.trim()) {
       toast.error("Please enter your thoughts before submitting!");
+      setButtonState("active")
       return;
     }
 

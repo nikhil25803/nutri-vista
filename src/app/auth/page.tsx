@@ -18,14 +18,14 @@ export default function Authentication() {
           <h1 className="text-2xl md:text-4xl">Authentication</h1>
           <div className="flex flex-col sm:flex-row gap-y-5 gap-x-5">
             <button
-              className="flex justify-center items-center text-xl md:text-2xl p-4 bg-textDark gap-x-3 hover:bg-backgroundDark transition-colors duration-500"
+              className="flex justify-center items-center text-xl md:text-2xl p-4 bg-textDark gap-x-3 hover:bg-backgroundDark transition-colors duration-500 rounded-xl"
               onClick={() => signIn("github")}
             >
               <FaGithub />
               GitHub
             </button>
             <button
-              className="flex justify-center items-center text-xl md:text-2xl p-4 bg-textDark gap-x-3 hover:bg-backgroundDark transition-colors duration-500"
+              className="flex justify-center items-center text-xl md:text-2xl p-4 bg-textDark gap-x-3 hover:bg-backgroundDark transition-colors duration-500 rounded-xl"
               onClick={() => signIn("google")}
             >
               <FaGoogle />
