@@ -20,6 +20,18 @@ export default function Navbar() {
   // Function to logout user
   const logOutUser = async () => {
     const data = await signOut({ redirect: false, callbackUrl: "/auth" });
+    // Clear cached data
+    const fetchedDate = new Date().toLocaleDateString();
+
+    localStorage.removeItem(`${fetchedDate}-lastEntryData`);
+    localStorage.removeItem(`${fetchedDate}-dashboardStat`);
+    localStorage.removeItem(`${fetchedDate}-calories-graphData`);
+    localStorage.removeItem(`${fetchedDate}-fats-graphData`);
+    localStorage.removeItem(`${fetchedDate}-carbs-graphData`);
+    localStorage.removeItem(`${fetchedDate}-sodium-graphData`);
+    localStorage.removeItem(`${fetchedDate}-sugars-graphData`);
+    localStorage.removeItem(`${fetchedDate}-protein-graphData`);
+
     localStorage.removeItem("token");
     setIsLoggedIn(false);
     router.push(data.url);
@@ -76,7 +88,7 @@ export default function Navbar() {
           setIsLoggedIn(false);
           logOutUser();
         }
-      } 
+      }
     };
 
     // If not, fetch new token and add

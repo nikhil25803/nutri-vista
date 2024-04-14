@@ -11,12 +11,14 @@ interface EntryPropsInterface {
 export default function EntryField(props: EntryPropsInterface) {
   // State
   const [value, setValue] = useState("");
+  const [buttonState, setButtonState] = useState("active");
 
   // Instances
   const router = useRouter();
 
   // Function to make an entry
   const submitEntry = async () => {
+    setButtonState("not-active")
     if (!value.trim()) {
       toast.error("Please enter your thoughts before submitting!");
       return;
@@ -44,13 +46,12 @@ export default function EntryField(props: EntryPropsInterface) {
         // Clear cached data
         localStorage.removeItem(`${fetchedDate}-lastEntryData`);
         localStorage.removeItem(`${fetchedDate}-dashboardStat`);
-        localStorage.removeItem(`${fetchedDate}-calories-graphData`)
-        localStorage.removeItem(`${fetchedDate}-fats-graphData`)
-        localStorage.removeItem(`${fetchedDate}-carbs-graphData`)
-        localStorage.removeItem(`${fetchedDate}-sodium-graphData`)
-        localStorage.removeItem(`${fetchedDate}-sugars-graphData`)
-        localStorage.removeItem(`${fetchedDate}-protein-graphData`)
-
+        localStorage.removeItem(`${fetchedDate}-calories-graphData`);
+        localStorage.removeItem(`${fetchedDate}-fats-graphData`);
+        localStorage.removeItem(`${fetchedDate}-carbs-graphData`);
+        localStorage.removeItem(`${fetchedDate}-sodium-graphData`);
+        localStorage.removeItem(`${fetchedDate}-sugars-graphData`);
+        localStorage.removeItem(`${fetchedDate}-protein-graphData`);
 
         toast.success("Entry has been recorded successfully!");
         window.location.reload();
@@ -60,6 +61,9 @@ export default function EntryField(props: EntryPropsInterface) {
     } else {
       toast.error("Unexpected error!");
     }
+
+    setButtonState("active")
+
   };
 
   useEffect(() => {
@@ -82,13 +86,23 @@ export default function EntryField(props: EntryPropsInterface) {
           value={value}
           onChange={(e) => setValue(e.target.value)}
         />
+        <p>Note: You can make one entry a day only!</p>
 
-        <button
-          className="px-5 py-2 rounded-xl bg-textDark hover:bg-backgroundDark transition duration-300"
-          onClick={submitEntry}
-        >
-          Submit
-        </button>
+        {buttonState === "active" ? (
+          <button
+            className="px-5 py-2 rounded-xl bg-textDark hover:bg-backgroundDark transition duration-300"
+            onClick={submitEntry}
+          >
+            Submit
+          </button>
+        ) : (
+          <button
+            className="px-5 py-2 rounded-xl bg-backgroundDark transition duration-300"
+            disabled={true}
+          >
+            Submitting ...
+          </button>
+        )}
       </div>
     </section>
   );
