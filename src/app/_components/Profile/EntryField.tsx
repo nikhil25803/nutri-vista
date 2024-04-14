@@ -79,7 +79,7 @@ export default function EntryField(props: EntryPropsInterface) {
     <section className="bg-backgroundDark mt-10 my-auto px-2 py-10 rounded-xl">
       <div className="flex flex-col items-center gap-y-5">
         <div className="text-2xl md:text-3xl">
-          Diary entry for today's intake.
+          Diary entry for today&apos;s intake.
         </div>
 
         <textarea
