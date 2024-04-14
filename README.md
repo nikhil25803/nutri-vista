@@ -20,5 +20,5 @@ Nutri Vista is a user-friendly nutrition analysis platform that simplifies meal 
 | Homepage  | Auth Page |
 | ------------- | ------------- |
 | ![image](https://github.com/nikhil25803/nutri-vista/assets/93156825/8c0b4afd-1478-4933-a41e-ca791d1787f8) | ![image](https://github.com/nikhil25803/nutri-vista/assets/93156825/b24aec27-f096-40b1-a1c0-153cfe8d5d74) |
-| Profile Page  | Auth Page |
+| Profile Page  | Charts |
 | ![image](https://github.com/nikhil25803/nutri-vista/assets/93156825/2a035fcd-8ec7-41ed-bdfc-9eebe10b698c) | ![image](https://github.com/nikhil25803/nutri-vista/assets/93156825/ec00b3b8-f813-43b9-ae64-5360ca3aa209) |
