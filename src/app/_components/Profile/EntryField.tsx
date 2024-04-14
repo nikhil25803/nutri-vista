@@ -18,10 +18,10 @@ export default function EntryField(props: EntryPropsInterface) {
 
   // Function to make an entry
   const submitEntry = async () => {
-    setButtonState("not-active")
+    setButtonState("not-active");
     if (!value.trim()) {
       toast.error("Please enter your thoughts before submitting!");
-      setButtonState("active")
+      setButtonState("active");
       return;
     }
 
@@ -63,8 +63,7 @@ export default function EntryField(props: EntryPropsInterface) {
       toast.error("Unexpected error!");
     }
 
-    setButtonState("active")
-
+    setButtonState("active");
   };
 
   useEffect(() => {
@@ -79,10 +78,12 @@ export default function EntryField(props: EntryPropsInterface) {
   return (
     <section className="bg-backgroundDark mt-10 my-auto px-2 py-10 rounded-xl">
       <div className="flex flex-col items-center gap-y-5">
-        <div className="text-2xl md:text-3xl">How was your today's intake?</div>
+        <div className="text-2xl md:text-3xl">
+          Diary entry for todays's intake.
+        </div>
 
         <textarea
-          placeholder="Write here ..."
+          placeholder="Bread, eggs, orange juice, banana, munch, cheetos, rice (300 g), dal, pulses,, momos, and roti."
           className="w-2/3 bg-textGrey px-3 py-5 rounded-xl overflow-y-hidden resize-none"
           value={value}
           onChange={(e) => setValue(e.target.value)}
