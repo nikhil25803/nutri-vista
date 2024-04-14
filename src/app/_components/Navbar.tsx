@@ -6,6 +6,7 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { GrLogout } from "react-icons/gr";
 
 export default function Navbar() {
   const router = useRouter();
@@ -14,11 +15,13 @@ export default function Navbar() {
   const [tokenCreated, setTokenCreated] = useState(false);
   const [loggedIn, setIsLoggedIn] = useState(false);
 
+  const [userName, setUsername] = useState();
+
   // Function to logout user
   const logOutUser = async () => {
     const data = await signOut({ redirect: false, callbackUrl: "/auth" });
     localStorage.removeItem("token");
-    setIsLoggedIn(false)
+    setIsLoggedIn(false);
     router.push(data.url);
   };
 
@@ -36,12 +39,27 @@ export default function Navbar() {
         });
 
         if (validationResponse.status == 200) {
-          return true;
+          const res = {
+            fethced: true,
+            data: validationResponse.data,
+          };
+
+          return res;
         } else {
-          return false;
+          const res = {
+            fethced: false,
+            data: null,
+          };
+
+          return res;
         }
       } catch (error) {
-        return false;
+        const res = {
+          fethced: false,
+          data: null,
+        };
+
+        return res;
       }
     };
 
@@ -49,13 +67,18 @@ export default function Navbar() {
     const checkTokenValidity = async () => {
       if (localStorageToken) {
         const check = await validateToken(localStorageToken);
-        if (check) {
+        if (check.fethced) {
           setIsLoggedIn(true);
           setTokenCreated(true);
+
+          setUsername(check.data.data.username);
         } else {
-          setIsLoggedIn(false)
+          setIsLoggedIn(false);
           logOutUser();
         }
+      } else {
+        setIsLoggedIn(false);
+        logOutUser();
       }
     };
 
@@ -95,12 +118,19 @@ export default function Navbar() {
         </div>
         <div>
           {loggedIn && (
-            <button
-              className="px-4 py-2 "
-              onClick={logOutUser}
-            >
-              <TbUserSquareRounded className="text-4xl text-white hover:text-textDark transition duration-500" />
-            </button>
+            <div>
+              <button
+                className="px-4 py-2 "
+                onClick={() => {
+                  router.push(`/${userName}`);
+                }}
+              >
+                <TbUserSquareRounded className="text-4xl text-white hover:text-textDark transition duration-500" />
+              </button>
+              <button className="px-4 py-2 " onClick={logOutUser}>
+                <GrLogout className="text-4xl text-white hover:text-textDark transition duration-500" />
+              </button>
+            </div>
           )}
           {!loggedIn && (
             <button

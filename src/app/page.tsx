@@ -24,11 +24,11 @@ export default function Home() {
               return <HomepageCard key={index} data={cdata} />;
             })}
           </div>
-          <div className="">
+          {/* <div className="">
             <button className="bg-textDark hover:bg-backgroundLight px-5 py-3 rounded-lg transition duration-300">
               Get Started
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
     </main>
