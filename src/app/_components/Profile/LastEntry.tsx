@@ -62,7 +62,10 @@ export default function LastEntry(props: LastEntryProps) {
         setNutrientsData(res.data.data);
 
         // Cache the result
-        localStorage.setItem(`${fetchedDate}-lastEntryData`, JSON.stringify(res.data));
+        localStorage.setItem(
+          `${fetchedDate}-lastEntryData`,
+          JSON.stringify(res.data)
+        );
       } else {
         toast.error("Error while fetching data. Sorry :(");
       }
@@ -88,30 +91,30 @@ export default function LastEntry(props: LastEntryProps) {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-x-20 gap-y-10">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-x-16 gap-y-10">
           <ProfileStatCard
             value={parseInt(nutrientsData.calories.toString())}
-            category={"Calories"}
+            category={"Calories (kcal)"}
           />
           <ProfileStatCard
             value={parseInt(nutrientsData.fats.toString())}
-            category={"Fat"}
+            category={"Fat (g)"}
           />
           <ProfileStatCard
             value={parseInt(nutrientsData.carbs.toString())}
-            category={"Carbs"}
+            category={"Carbs (g)"}
           />
           <ProfileStatCard
             value={parseInt(nutrientsData.sodium.toString())}
-            category={"Sodium"}
+            category={"Sodium (mg)"}
           />
           <ProfileStatCard
             value={parseInt(nutrientsData.sugars.toString())}
-            category={"Sugars"}
+            category={"Sugars (g)"}
           />
           <ProfileStatCard
             value={parseInt(nutrientsData.protein.toString())}
-            category={"Protein"}
+            category={"Protein (g)"}
           />
         </div>
       </div>
