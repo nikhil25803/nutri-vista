@@ -79,16 +79,16 @@ export default function EntryField(props: EntryPropsInterface) {
     <section className="bg-backgroundDark mt-10 my-auto px-2 py-10 rounded-xl">
       <div className="flex flex-col items-center gap-y-5">
         <div className="text-2xl md:text-3xl">
-          Diary entry for todays's intake.
+          Diary entry for today&aposs intake.
         </div>
 
         <textarea
-          placeholder="Bread, eggs, orange juice, banana, munch, cheetos, rice (300 g), dal, pulses,, momos, and roti."
+          placeholder="Bread, eggs, orange juice, banana, munch, cheetos, rice (300 g), dal, pulses, momos, and roti."
           className="w-2/3 bg-textGrey px-3 py-5 rounded-xl overflow-y-hidden resize-none"
           value={value}
           onChange={(e) => setValue(e.target.value)}
         />
-        <p>Note: You can make one entry a day only!</p>
+        <p>Note: You can make one entry a day only.</p>
 
         {buttonState === "active" ? (
           <button
