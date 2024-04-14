@@ -25,23 +25,32 @@ export default function LastEntry(props: LastEntryProps) {
   // Function to make /getLastEntry API Call
   const fetchLastEntryData = async (userEmail: string, jwtToken: string) => {
     // Call the function
-    const entryResponse = await axios.get("/api/getLastEntry", {
-      params: {
-        useremail: userEmail,
-      },
-      headers: {
-        usertoken: jwtToken,
-      },
-    });
+    try {
+      const entryResponse = await axios.get("/api/getLastEntry", {
+        params: {
+          useremail: userEmail,
+        },
+        headers: {
+          usertoken: jwtToken,
+        },
+      });
 
-    if (entryResponse.status === 200) {
-      const res = {
-        fetched: true,
-        data: entryResponse.data,
-      };
+      if (entryResponse.status === 200) {
+        const res = {
+          fetched: true,
+          data: entryResponse.data,
+        };
 
-      return res;
-    } else {
+        return res;
+      } else {
+        const res = {
+          fetched: false,
+          data: null,
+        };
+
+        return res;
+      }
+    } catch (error) {
       const res = {
         fetched: false,
         data: null,
@@ -67,7 +76,7 @@ export default function LastEntry(props: LastEntryProps) {
           JSON.stringify(res.data)
         );
       } else {
-        toast.error("Error while fetching data. Sorry :(");
+        // toast.error("Error while fetching data. Sorry :(");
       }
     };
 

@@ -77,6 +77,17 @@ export async function GET(request: NextRequest) {
   ]);
 
   const nutrientsData = userData[0].nutrientsData;
+  if (nutrientsData.length <= 0) {
+    return NextResponse.json(
+      {
+        message: "No Data found",
+        name: userObject.name,
+        username: userObject.username,
+        data: null,
+      },
+      { status: 202 }
+    );
+  }
 
   // Calculate total data
   let totalCalories = 0;
