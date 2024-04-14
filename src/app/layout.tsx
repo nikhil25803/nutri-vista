@@ -5,6 +5,7 @@ import Navbar from "./_components/Navbar";
 import Footer from "./_components/Footer";
 import AuthProvider from "./_components/SessionProvider";
 import { Toaster } from "react-hot-toast";
+import { Analytics } from "@vercel/analytics/react"
 
 const font = Sora({ subsets: ["latin"] });
 
@@ -25,6 +26,7 @@ export default function RootLayout({
           <Navbar />
           <Toaster position="top-right" />
           {children}
+          <Analytics/>
           <Footer />
         </AuthProvider>
       </body>
