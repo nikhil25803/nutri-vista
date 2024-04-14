@@ -33,6 +33,7 @@ export async function POST(request: NextRequest) {
     name: userData.name,
     username: userData.username,
     email: userData.email,
+    photourl: userData.avatarUrl
   };
 
   const token = jwt.sign(tokenData, process.env.TOKEN_SECRET!, {

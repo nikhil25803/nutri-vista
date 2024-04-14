@@ -90,7 +90,6 @@ export default function StatChart(props: ChartPoropsInterface) {
           setXLabelData(JSON.parse(cachedData).labels);
           setYLabelData(JSON.parse(cachedData).data);
           setFetchedState("found");
-
         } else {
           const graphData = await categoryGraphData(payload);
 
@@ -107,9 +106,9 @@ export default function StatChart(props: ChartPoropsInterface) {
           }
         }
       } catch (error) {
-        toast.error("Error fetching graph data.", {
-          id: "error-while-fetching-data",
-        });
+        // toast.error("Error fetching graph data.", {
+        //   id: "error-while-fetching-data",
+        // });
         setFetchedState("notfound");
       }
     };

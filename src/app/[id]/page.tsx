@@ -24,6 +24,9 @@ export default function ProfilePage({ params }: { params: { id: string } }) {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [jwtToken, setJwtToken] = useState("");
+  const [avatar, setAvatar] = useState(
+    "https://avatars.githubusercontent.com/u/93156825?v=4"
+  );
   const [dashboardData, setDashboardData] = useState({
     totalCalories: 0,
     totalFat: 0,
@@ -136,9 +139,10 @@ export default function ProfilePage({ params }: { params: { id: string } }) {
             setName(userData.name);
             setUsername(userData.username);
             setEmail(userData.email);
+            setAvatar(userData.photourl);
 
             const fetchedDate = new Date().toLocaleDateString();
-            
+
             // Check for cached result
             const cachedDashboardData = localStorage.getItem(
               `${fetchedDate}-dashboardStat`
@@ -187,7 +191,7 @@ export default function ProfilePage({ params }: { params: { id: string } }) {
             <div className="grid grid-cols-1 md:grid-cols-4">
               <div className="flex flex-col sm:flex-row items-center justify-center gap-x-5 md:flex-col gap-y-5 md:col-span-2">
                 <Image
-                  src="https://avatars.githubusercontent.com/u/93156825?v=4"
+                  src={avatar}
                   alt="Hello World"
                   width={200}
                   height={200}
